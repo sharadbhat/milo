@@ -14,6 +14,9 @@ import './mas-mnemonic.js';
 
 import { registerVariant } from './variants/variants.js';
 
+// Import m7card
+import { M7CARD_AEM_FRAGMENT_MAPPING, M7card } from './variants/m7card.js';
+
 // Import ccd variants
 import {
     CCD_SUGGESTED_AEM_FRAGMENT_MAPPING,
@@ -32,17 +35,20 @@ import {
 
 //Import ah-promoted-plans
 import {
-  AH_PROMOTED_PLANS_AEM_FRAGMENT_MAPPING,
-  AHPromotedPlans,
-} from './variants/ah-promoted-plans.js'
+    AH_PROMOTED_PLANS_AEM_FRAGMENT_MAPPING,
+    AHPromotedPlans,
+} from './variants/ah-promoted-plans.js';
 
 //Import fries
-import {
-  FRIES_AEM_FRAGMENT_MAPPING,
-  FriesCard,
-} from './variants/fries.js';
+import { FRIES_AEM_FRAGMENT_MAPPING, FriesCard } from './variants/fries.js';
 
 // Register dynamic variants
+registerVariant(
+    'm7card',
+    M7card,
+    M7CARD_AEM_FRAGMENT_MAPPING,
+    M7card.variantStyle,
+);
 registerVariant(
     'ccd-suggested',
     CCDSuggested,
@@ -62,14 +68,14 @@ registerVariant(
     AHTryBuyWidget.variantStyle,
 );
 registerVariant(
-  'ah-promoted-plans',
-  AHPromotedPlans,
-  AH_PROMOTED_PLANS_AEM_FRAGMENT_MAPPING,
-  AHPromotedPlans.variantStyle,
+    'ah-promoted-plans',
+    AHPromotedPlans,
+    AH_PROMOTED_PLANS_AEM_FRAGMENT_MAPPING,
+    AHPromotedPlans.variantStyle,
 );
 registerVariant(
-  'fries',
-  FriesCard,
-  FRIES_AEM_FRAGMENT_MAPPING,
-  FriesCard.variantStyle,
+    'fries',
+    FriesCard,
+    FRIES_AEM_FRAGMENT_MAPPING,
+    FriesCard.variantStyle,
 );
