@@ -17,6 +17,12 @@ import { registerVariant } from './variants/variants.js';
 // Import m7card
 import { M7CARD_AEM_FRAGMENT_MAPPING, M7card } from './variants/m7card.js';
 
+//Import bundleoptioncard3in1
+import {
+    BUNDLEOPTION3IN1_AEM_FRAGMENT_MAPPING,
+    BundleOption3In1Card,
+} from './variants/bundleoptioncard3in1.js';
+
 // Import ccd variants
 import {
     CCD_SUGGESTED_AEM_FRAGMENT_MAPPING,
@@ -78,4 +84,10 @@ registerVariant(
     FriesCard,
     FRIES_AEM_FRAGMENT_MAPPING,
     FriesCard.variantStyle,
+);
+registerVariant(
+    'bundleoptioncard3in1',
+    BundleOption3In1Card,
+    BUNDLEOPTION3IN1_AEM_FRAGMENT_MAPPING,
+    BundleOption3In1Card.variantStyle,
 );

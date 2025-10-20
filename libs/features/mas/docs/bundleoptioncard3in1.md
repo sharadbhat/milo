@@ -10,7 +10,6 @@ The `bundleoptioncard3in1` variant is a vertical product card designed for showc
 
 -   **Flexible sizing**: Four size options (s, m, l, xl) via single-letter mnemonics
 -   **Responsive height**: Auto-adjusts to content with fixed 42px spacing before pricing
--   **Horizontal layout**: XL size features hero image on left, content on right
 -   **Customizable badge**: Optional top-right badge with custom background color
 -   **Product header**: Icon and product name
 -   **Rich content**: Description, "What you get" section with checkmarked features
@@ -23,19 +22,29 @@ The `bundleoptioncard3in1` variant is a vertical product card designed for showc
 
 ✅ **Height**: Responsive to content (auto-height)  
 ✅ **Width**: Controlled by `size` attribute (s/m/l/xl)  
-✅ **Layout**: Vertical for s/m/l, horizontal (with hero image) for xl  
+✅ **Layout**: Vertical layout for all sizes  
 ✅ **Badge**: Top-right positioned, customizable via `badge-background-color` and `badge-color` attributes  
 ✅ **Content-to-Price Gap**: Fixed 42px spacing between content and pricing section  
 ✅ **Feature Bullets**: Checkmark-style bullets for feature list
 
 ### Size Options
 
-| Size | Width  | Layout     | Use Case                                   |
-| ---- | ------ | ---------- | ------------------------------------------ |
-| `s`  | 318px  | Vertical   | Default, mobile-friendly layouts           |
-| `m`  | 480px  | Vertical   | Medium screen layouts                      |
-| `l`  | 640px  | Vertical   | Large screen, detailed view                |
-| `xl` | 1200px | Horizontal | Hero image (left) + content (right) layout |
+All sizes have a consistent width behavior:
+
+-   **min-width**: 365px
+-   **max-width**: 100%
+-   **width**: 100%
+
+The card will grow to fill available space up to 100% width, while maintaining a minimum width of 365px.
+
+| Size | Mnemonic | Layout   | Use Case                         |
+| ---- | -------- | -------- | -------------------------------- |
+| `s`  | s        | Vertical | Default, mobile-friendly layouts |
+| `m`  | m        | Vertical | Medium screen layouts            |
+| `l`  | l        | Vertical | Large screen, detailed view      |
+| `xl` | xl       | Vertical | Extra large, prominent display   |
+
+**Note**: The size attribute is primarily used for AEM authoring and variant selection. All sizes share the same flexible width behavior.
 
 ## Usage Example
 
@@ -108,7 +117,6 @@ The `bundleoptioncard3in1` variant is a vertical product card designed for showc
 | Slot Name      | Type  | Description                          | Required |
 | -------------- | ----- | ------------------------------------ | -------- |
 | `badge`        | badge | Top-right badge (e.g., "Best value") | No       |
-| `image`        | div   | Hero image (visible only in xl size) | No       |
 | `icons`        | icon  | Product icon in header (32×32px)     | Yes      |
 | `heading-xs`   | h3    | Product name/title (18px, bold)      | Yes      |
 | `body-m`       | div   | Main description text (14px)         | Yes      |
@@ -144,17 +152,11 @@ The `bundleoptioncard3in1` variant is a vertical product card designed for showc
 </merch-card>
 ```
 
-### Extra Large (Horizontal Layout)
+### Extra Large
 
 ```html
 <merch-card variant="bundleoptioncard3in1" size="xl">
-    <!-- Hero Image (left side) -->
-    <div slot="image">
-        <img src="hero-image.jpg" alt="Product" />
-    </div>
-
-    <!-- Content (right side) -->
-    <!-- All other slots as usual -->
+    <!-- content -->
 </merch-card>
 ```
 
@@ -173,11 +175,35 @@ The badge is positioned at the top-right and supports custom colors:
 </merch-card>
 ```
 
-**Common Badge Colors:**
+**Spectrum Badge Colors:**
 
--   Best value: `#378E5C` background (green), `#FFFFFF` text
--   Popular: `#1473E6` background (blue), `#FFFFFF` text
--   Limited time: `#E34850` background (red), `#FFFFFF` text
+The badge color is fully customizable using Adobe Spectrum color tokens. Authors can select from the variant picker dropdown to apply different badge colors:
+
+-   **Green (Best value)**: `spectrum-green-800` or `#378E5C`
+-   **Blue (Popular)**: `spectrum-blue-600` or `#1473E6`
+-   **Red (Limited time)**: `spectrum-red-600` or `#E34850`
+-   **Purple (New)**: `spectrum-purple-600` or `#9256D9`
+-   **Orange (Featured)**: `spectrum-orange-600` or `#DA7B11`
+-   **Gray (Standard)**: `spectrum-gray-800` or `#2C2C2C`
+
+**Spectrum Color Reference:**
+
+| Color Family | Token Name          | Hex Value | Common Use Case    |
+| ------------ | ------------------- | --------- | ------------------ |
+| Gray         | spectrum-gray-800   | #2C2C2C   | Standard/Default   |
+| Gray         | spectrum-gray-700   | #464646   | Secondary          |
+| Blue         | spectrum-blue-600   | #1473E6   | Popular/Featured   |
+| Blue         | spectrum-blue-700   | #0D66D0   | Info               |
+| Red          | spectrum-red-600    | #E34850   | Limited/Urgent     |
+| Red          | spectrum-red-700    | #D7373F   | Alert              |
+| Orange       | spectrum-orange-600 | #DA7B11   | Attention          |
+| Orange       | spectrum-orange-700 | #CB6F10   | Warning            |
+| Green        | spectrum-green-800  | #378E5C   | Best value/Success |
+| Green        | spectrum-green-700  | #44934E   | Confirmed          |
+| Purple       | spectrum-purple-600 | #9256D9   | New/Premium        |
+| Purple       | spectrum-purple-700 | #8346C3   | Special            |
+
+**Text Color:** Typically `#FFFFFF` (white) or `spectrum-gray-50` for dark backgrounds
 
 ## AEM Fragment Mapping
 
@@ -185,24 +211,28 @@ The variant includes automatic mapping for AEM fragments:
 
 ```javascript
 {
-    mnemonics: { size: 's' },
+    mnemonics: { size: 'xl' },
     badge: { slot: 'badge' },
-    backgroundImage: { slot: 'image' },
+    badgeBackgroundColor: { attribute: 'badge-background-color' },
+    badgeColor: { attribute: 'badge-color' },
+    badgeText: { attribute: 'badge-text' },
+    icons: { slot: 'icons' },
     title: { slot: 'heading-xs', maxCount: 250 },
     description: { slot: 'body-m', maxCount: 2000 },
     whatYouGetHeading: { slot: 'body-xs' },
     featureBullets: { slot: 'body-xl' },
     link: { slot: 'body-xxl' },
-    prices: { slot: 'price' },
     priceDetails: { slot: 'priceDetails' },
-    size: ['s', 'm', 'l', 'xl']
+    prices: { slot: 'price' },
+    ctas: { slot: 'footer', size: 'L' },
 }
 ```
 
 ## Styling Notes
 
+-   Width: min-width `365px`, max-width `100%`, width `100%`
 -   Background: `spectrum-gray-50`
--   Border radius: `8px`
+-   Border radius: `2px`
 -   Padding: `20px`
 -   Content gap: `10px`
 -   Content-to-price gap: `42px` (fixed spacing)
@@ -214,10 +244,10 @@ The variant includes automatic mapping for AEM fragments:
 
 ## Layout Structure
 
-### Vertical Layout (s, m, l sizes)
+### Vertical Layout (all sizes)
 
 ```
-┌─────────────────────────────────────────┐ ← Card Container (318px/480px/640px)
+┌─────────────────────────────────────────┐ ← Card Container (min 365px, max 100%)
 │                          ┌──────────┐   │
 │                          │Best value│   │ ← Badge (top-right)
 │                          └──────────┘   │
@@ -250,35 +280,6 @@ The variant includes automatic mapping for AEM fragments:
 └─────────────────────────────────────────┘
 ```
 
-### Horizontal Layout (xl size)
-
-```
-┌───────────────────────────────────────────────────────────────────────────┐
-│                                                    ┌──────────┐            │
-│                                                    │Best value│ ← Badge    │
-│                                                    └──────────┘            │
-│  ┌─────────────────────┐  ┌─────────────────────────────────────────┐    │
-│  │                     │  │                                         │    │
-│  │                     │  │  🎨 Creative Cloud Pro                  │    │
-│  │                     │  │                                         │    │
-│  │     Hero Image      │  │  Get ultimate toolkit for a new era... │    │
-│  │    (left 50%)       │  │                                         │    │
-│  │                     │  │  What you get:                          │    │
-│  │   600px max-width   │  │  ✓ 20+ app including...                │    │
-│  │                     │  │  ✓ Unlimited access to...              │    │
-│  │                     │  │  ✓ 4000 monthly generative...          │    │
-│  │                     │  │  See what's included →                  │    │
-│  │                     │  │                                         │    │
-│  │                     │  │         (42px gap)                      │    │
-│  │                     │  │                                         │    │
-│  │                     │  │  7-day free trial, then                 │    │
-│  │                     │  │  US$  69.99/mo                          │    │
-│  └─────────────────────┘  └─────────────────────────────────────────┘    │
-│   Image slot (order: -1)   Content wrapper (right 50%)                   │
-└───────────────────────────────────────────────────────────────────────────┘
-                          1200px total width
-```
-
 ## Key Spacing
 
 -   **Product header to description**: 10px
@@ -309,73 +310,6 @@ The variant includes automatic mapping for AEM fragments:
 -   `/libs/features/mas/src/variants/variants.js` - Variant registration
 -   `/libs/features/mas/docs/bundleoptioncard3in1.md` - This documentation
 
-## Extra Large (XL) Size Details
-
-The XL size transforms the card into a horizontal layout perfect for hero sections and landing pages.
-
-### XL Layout Features
-
--   **Total width**: 1200px
--   **Min height**: 447px
--   **Image section**: Left 50% (max-width: 600px)
--   **Content section**: Right 50% with padding
--   **Image handling**: `object-fit: cover` for full coverage
--   **Border radius**: Left side rounded (8px 0 0 8px)
-
-### XL Usage Example
-
-```html
-<merch-card
-    variant="bundleoptioncard3in1"
-    size="xl"
-    badge-text="Best value"
-    badge-background-color="#378E5C"
-    badge-color="#FFFFFF"
->
-    <!-- Hero Image (appears on left) -->
-    <div slot="image">
-        <img
-            src="https://example.com/hero-creative-cloud.jpg"
-            alt="Creative Cloud workspace"
-        />
-    </div>
-
-    <merch-badge slot="badge">Best value</merch-badge>
-
-    <merch-icon slot="icons" src="creative-cloud-icon.svg"></merch-icon>
-    <h3 slot="heading-xs">Creative Cloud Pro</h3>
-
-    <div slot="body-m">
-        <p>Get ultimate toolkit for a new era in creativity...</p>
-    </div>
-
-    <div slot="body-xs">What you get:</div>
-
-    <div slot="body-xl">
-        <ul>
-            <li>20+ app including Photoshop and Illustrator...</li>
-            <li>Unlimited access to standard AI image features</li>
-            <li>4000 monthly generative credits...</li>
-        </ul>
-    </div>
-
-    <a slot="body-xxl" href="#">See what's included</a>
-
-    <p slot="priceDetails">7-day free trial, then</p>
-    <div slot="price">
-        <span is="inline-price" data-wcs-osi="..."></span>
-    </div>
-</merch-card>
-```
-
-### Image Best Practices for XL Size
-
--   **Recommended dimensions**: 1200×800px or larger
--   **Aspect ratio**: 3:4 or 4:3 works well
--   **File format**: WebP for better performance, with JPEG fallback
--   **Alt text**: Always include descriptive alt text
--   **Content**: Show product in use, workspace, or lifestyle imagery
-
 ## Design Considerations
 
 ### Content Flexibility
@@ -393,9 +327,9 @@ The badge is positioned at the top-right (not top-left like some variants) to dr
 
 ### Layout Adaptability
 
--   **Vertical (s, m, l)**: Content-focused, ideal for comparison grids
--   **Horizontal (xl)**: Visual-first, perfect for hero sections and feature highlights
--   Image slot is hidden for s/m/l sizes, only visible in xl
+-   **All sizes (s, m, l, xl)**: Consistent vertical layout with flexible width (min 365px, max 100%)
+-   Cards automatically adapt to their container width while maintaining minimum readability
+-   Ideal for responsive grids, comparison layouts, and promotional sections across all screen sizes
 
 ### Typography Hierarchy
 
@@ -411,5 +345,4 @@ The badge is positioned at the top-right (not top-left like some variants) to dr
 -   Premium tier comparisons
 -   Limited-time promotional offers
 -   "Best value" or "Most popular" plan highlights
--   Hero sections with visual storytelling (xl size)
--   Landing page feature highlights (xl size)
+-   Landing page feature highlights
